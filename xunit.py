@@ -2,7 +2,11 @@ class TestCase:
     def __init__(self, name) -> None:
         self.name = name
 
+    def setUp(self):
+        pass
+
     def run(self):
+        self.setUp()
         method = getattr(self, self.name)
         method()
 
@@ -14,14 +18,23 @@ class TestCaseTest(TestCase):
         test.run()
         assert test.wasRun
 
+    def testSetUp(self):
+        test = WasRun("testMethod")
+        test.run()
+        assert test.wasSetUp
+
 
 class WasRun(TestCase):
     def __init__(self, name) -> None:
         self.wasRun = None
         super().__init__(name)
 
+    def setUp(self):
+        self.wasSetUp = 1
+
     def testMethod(self):
         self.wasRun = 1
 
 
 TestCaseTest("testRunning").run()
+TestCaseTest("testSetUp").run()
